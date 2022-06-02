@@ -1,7 +1,7 @@
 {
   "name": "@appsync-butler/sst",
   "description": "Load resolvers into SST AppSync API constructs.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Ali Cherry",
   "homepage": "https://github.com/alichry/appsync-butler#readme",
   "license": "MIT",
@@ -37,7 +37,7 @@
     "prepublishOnly": "npm run build && npm run test"
   },
   "devDependencies": {
-    "@appsync-butler/core": "^0.0.0",
+    "@appsync-butler/core": "^0.1.0",
     "@aws-cdk/aws-appsync-alpha": "2.24.0-alpha.0",
     "@serverless-stack/resources": "1.2.11",
     "@types/chai": "^4.3.0",

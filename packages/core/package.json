@@ -1,6 +1,6 @@
 {
   "name": "@appsync-butler/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A simple yet powerful AppSync development framework. Compatible with CDK and SST. 🚀 Highly-suitable for Single Table design applications.",
   "author": "Ali Cherry",
   "homepage": "https://github.com/alichry/appsync-butler#readme",
@@ -14,7 +14,9 @@
       "require": "./dist/cjs/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "directories": {
     "lib": "lib",
     "test": "test"
