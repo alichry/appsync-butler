@@ -1,5 +1,10 @@
 # AppSync Butler (SST)
 
+> AppSync Butler is an AppSync (GraphQL) API development framework, compatible with
+> AWS Cloud Development Kit and Serverless Stack Toolkit. Visit the
+> [homepage](https://github.com/alichry/appsync-butler#readme) for more
+> information.
+
 This package is concerned with loading on-disk resolvers into 
 SST AppSync API constructs. This is not necessarily required 
 when using SST, you can still load on-disk resolvers and functions 

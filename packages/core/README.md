@@ -1,5 +1,10 @@
 # AppSync Butler
 
+> AppSync Butler is an AppSync (GraphQL) API development framework, compatible with
+> AWS Cloud Development Kit and Serverless Stack Toolkit. Visit the
+> [homepage](https://github.com/alichry/appsync-butler#readme) for more
+> information.
+
 This package does the heavy-lifting to parse and load on-disk resolvers and functions.
 
 ## Quick start
