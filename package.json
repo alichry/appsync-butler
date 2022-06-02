@@ -1,0 +1,14 @@
+{
+  "name": "root",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Ali Cherry",
+  "homepage": "https://github.com/alichry/appsync-butler#readme",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "lerna bootstrap --hoist"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

@@ -1,0 +1,75 @@
+---
+sidebar_position: 1
+---
+
+# Installation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+AppSync Butler should be installed in your CDK or SST application. 
+If you are new to CDK/SST, please consult the relevant documentation:
+
+- Getting started with [AWS Cloud Development Kit](https://docs.aws.amazon.com/cdk/v2/guide/hello_world.html)
+- Getting started with [Serverless Stack Toolkit](https://docs.serverless-stack.com/installation)
+
+## Create a new CDK or SST application
+
+We provide a convenient CLI [appsync-butler](https://www.npmjs.com/package/appsync-butler) to bootstrap a CDK or SST
+application with AppSync Butler installed. If you have an
+existing CDK or SST application, skip to the [Manual setup](#manual-setup) section. 
+To create a new project, run the following:
+
+<Tabs>
+  <TabItem value="Serverless Stack Toolkit">
+
+```shell
+npx appsync-butler -t sst
+```
+
+  </TabItem>
+  <TabItem value="AWS Cloud Development Kit">
+
+```shell
+npx appsync-butler -t cdk -- --language typescript
+```
+:::tip
+
+The `--language typescript` option is passed to the `aws-cdk` CLI.
+To view other other possible values, run `npx aws-cdk init app --help`
+(or `npx appsync-butler -t cdk -- --help`).
+:::
+
+  </TabItem>
+</Tabs>
+
+This will take care of **invoking the [sst](https://www.npmjs.com/package/create-sst)
+or the [cdk](https://www.npmjs.com/package/aws-cdk) CLI along with installing
+AppSync Butler and setting up the directory tree**.
+
+## Manual setup
+
+Open a terminal in your CDK or SST project and install the required dependencies.
+
+<Tabs>
+  <TabItem value="Serverless Stack Toolkit">
+
+```shell
+# Using npm:
+npm install @appsync-butler/core @appsync-butler/sst
+# Using Yarn:
+yarn add @appsync-butler/core @appsync-butler/sst
+```
+
+  </TabItem>
+  <TabItem value="AWS Cloud Development Kit">
+
+```shell
+# Using npm:
+npm install @aws-cdk/aws-appsync-alpha @appsync-butler/core
+# Using Yarn:
+yarn add @aws-cdk/aws-appsync-alpha @appsync-butler/core
+```
+
+  </TabItem>
+</Tabs>

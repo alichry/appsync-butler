@@ -1,0 +1,83 @@
+---
+sidebar_position: 6
+---
+
+# Load resolvers
+
+Up until now, we have not interacted with AppSync Butler. We have
+1. Defined a GraphQL schema.
+2. Setup the resolvers.
+3. Instantialized the AppSync API construct.
+
+The AppSync construct is not _yet_ aware of the on-disk resolvers. 
+AppSync Butler handles this process seamlessly. To load on-disk
+resolvers and functions, use [`Loader`](/docs/api/classes/appsync_butler_core.Loader) or
+[`SstLoader`](/docs/api/classes/appsync_butler_sst.SstLoader) for CDK and SST applications respectively
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="Serverless Stack Toolkit">
+
+```ts title="stacks/MyStack.ts" {2,12,13}
+import * as sst from "@serverless-stack/resources";
+import { SstLoader as Loader } from '@appsync-butler/sst';
+
+export default class MyStack extends sst.Stack {
+  constructor(scope: sst.App, id: string, props: sst.StackProps) {
+    super(scope, id, props);
+
+    const api = new sst.AppSyncApi(this, "api", {
+      graphqlApi: { schema: "graphql/index.graphql" }
+    });
+
+    const loader = new Loader(this, { api });
+    loader.load();
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="AWS Cloud Development Kit">
+
+```ts title="lib/app-stack.ts" {4,14,15}
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { GraphqlApi } from '@aws-cdk/aws-appsync-alpha';
+import { Loader } from '@appsync-butler/core';
+
+export class AppStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
+
+    const api = new GraphqlApi(this, "api", {
+      name: "time-pingpong-api"
+    });
+
+    const loader = new Loader(this, { api });
+    loader.load();
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+:::tip
+
+Instead of explicitly associating resolvers with data sources in request mapping templates,
+you can specify a default data source when creating the loader. 
+
+```ts
+const loader = new Loader(this, { api, defaultUnitResolverDataSource: 'none' });
+```
+<!--
+```diff title="$ git diff vtl/resolvers/Query/getDateTime/request.vtl"
+-##@butler.dataSource('none')
+{
+    "version": "2018-05-29"
+}
+```
+-->
+For other options that you may pass, check [LoaderOptions](/docs/api/#loaderoptions).
+:::

@@ -1,0 +1,73 @@
+{
+  "name": "@appsync-butler/core",
+  "version": "0.0.0",
+  "description": "A simple yet powerful AppSync development framework. Compatible with CDK and SST. 🚀 Highly-suitable for Single Table design applications.",
+  "author": "Ali Cherry",
+  "homepage": "https://github.com/alichry/appsync-butler#readme",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "files": ["dist"],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "pretranspile:esm": "rm -rf ./dist/esm",
+    "pretranspile:cjs": "rm -rf ./dist/cjs",
+    "transpile:esm": "tsc --project tsconfig.build.json --outDir ./dist/esm",
+    "transpile:cjs": "tsc --project tsconfig.build.cjs.json --outDir ./dist/cjs",
+    "posttranspile:cjs": "echo '{\"type\": \"commonjs\"}' > ./dist/cjs/package.json",
+    "transpile": "npm run transpile:esm && npm run transpile:cjs",
+    "build": "npm run lint && npm run transpile",
+    "test": "c8 mocha --loader=ts-node/esm 'test/**/*.{ts,js}'",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "devDependencies": {
+    "@aws-cdk/aws-appsync-alpha": "2.24.0-alpha.0",
+    "@types/chai": "^4.3.0",
+    "@types/lodash": "^4.14.178",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^16.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "aws-cdk-lib": "2.24.0",
+    "c8": "^7.11.3",
+    "chai": "^4.3.4",
+    "eslint": "^8.4.1",
+    "eslint-plugin-import": "^2.25.3",
+    "lodash": "^4.17.21",
+    "mocha": "^9.1.3",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "peerDependencies": {
+    "@aws-cdk/aws-appsync-alpha": "*",
+    "aws-cdk-lib": "2.x"
+  },
+  "keywords": [
+    "appsync-butler",
+    "appsync",
+    "resolver",
+    "graphql",
+    "aws",
+    "aws-appsync",
+    "aws-cdk",
+    "serverless-stack",
+    "serverless-stack-toolkit"
+  ],
+  "bugs": {
+    "url": "https://github.com/alichry/appsync-butler/issues"
+  }
+}

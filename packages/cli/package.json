@@ -1,0 +1,42 @@
+{
+  "name": "appsync-butler",
+  "version": "0.0.0",
+  "description": "CLI to install and manage AppSync Butler",
+  "keywords": [
+    "appsync-butler",
+    "appsync",
+    "aws-appsync",
+    "aws-cdk"
+  ],
+  "author": "Ali Cherry",
+  "homepage": "https://github.com/alichry/appsync-butler#readme",
+  "license": "MIT",
+  "main": "lib/index.mjs",
+  "bin": {
+    "appsync-butler": "bin/appsync-butler.mjs"
+  },
+  "type": "module",
+  "files": [
+    "bin/",
+    "lib/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "node bin/appsync-butler.mjs --help > /dev/null 2>&1 && echo 'Need more tests!'",
+    "prepublishOnly": "npm run test"
+  },
+  "dependencies": {
+    "commander": "^9.3.0",
+    "execa": "^6.1.0",
+    "inquirer": "^8.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alichry/appsync-butler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alichry/appsync-butler/issues"
+  }
+}
