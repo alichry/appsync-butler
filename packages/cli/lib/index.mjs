@@ -1,5 +1,6 @@
 import { execa } from 'execa';
 import { mkdir as fsMkdir, appendFile as fsAppendFile } from 'fs/promises';
+import { resolve } from 'path';
 
 /**
  * @param {string} directory
@@ -24,59 +25,57 @@ export const initCdk = async (directory, toolkitArgs) => {
  */
 export const initSst = async (directory, toolkitArgs = []) => {
     if (
-        toolkitArgs.length === 0 || (
-            toolkitArgs.length === 1 &&
-            toolkitArgs[0] === '--examples'
-        )
+        toolkitArgs.length === 0 ||
+        toolkitArgs[toolkitArgs.length - 1] !== directory
     ) {
-        toolkitArgs.push('');
+        toolkitArgs.push(directory);
     }
-    toolkitArgs.push(directory);
     await exec(
         '💔 An error has occurred when installing SST.',
-        'npm', ['init', 'sst'].concat(toolkitArgs)
+        'npx', ['create-sst'].concat(toolkitArgs)
     );
     await exec(
         '💔 An error has occurred when installing SST.',
         'npm', ['install'],
         directory
     );
-    // @aws-cdk/aws-appsync-alpha should be already installed by SST
-    // await exec(
-    //     '💔 An error has occurred when installing \'@aws-cdk/aws-appsync-alpha\'',
-    //     'npm', ['exec', '--package=@serverless-stack/cli', 'sst', 'add-cdk', '@aws-cdk/aws-appsync-alpha'],
-    //     directory
-    // );
+    // @aws-cdk/aws-appsync-alpha should be already installed by SST,
+    // but it is a @serverless-stack/resources dependency. Let's install it
+    // as a root dependency to help npm notice that the required
+    // @aws-cdk/aws-appsync-alpha peer dependency is installed.
+    await exec(
+        '💔 An error has occurred when installing \'@aws-cdk/aws-appsync-alpha\'',
+        'npm', ['exec', '--package=@serverless-stack/cli', 'sst', 'add-cdk', '@aws-cdk/aws-appsync-alpha'],
+        directory
+    );
 }
 
-export const initButler = async () => {
+/**
+ * @param {string} directory
+ * @param {boolean} installSst
+ */
+export const initButler = async (directory, installSst = false) => {
     await exec(
         '💔 An error has occurred when installing \'@appsync-butler/core\'.',
-        'npm', ['install', '@appsync-butler/core']
+        'npm', ['install', '@appsync-butler/core'].concat(installSst ? ['@appsync-butler/sst'] : []),
+        directory
     );
     try {
         await mkdir(
-            'vtl',
-            'vtl/resolvers',
-            'vtl/functions',
-            'vtl/resolvers/Query',
-            'vtl/resolvers/Mutation',
-            'graphql'
+            `${directory}/vtl`,
+            `${directory}/vtl/resolvers`,
+            `${directory}/vtl/functions`,
+            `${directory}/vtl/resolvers/Query`,
+            `${directory}/vtl/resolvers/Mutation`,
+            `${directory}/graphql`,
         );
-        await appendToFile('graphql/index.graphql', "# TODO: Write GraphQL schema\n");
+        await appendToFile(`${directory}/graphql/index.graphql`, "# TODO: Write GraphQL schema\n");
         console.log("\n✅ AppSync Butler has been installed alongisde your preferred toolkit!");
     } catch (e) {
         console.error("💔 An error has occurred when setting up the butler's directory structure 👇\n");
         console.error(e);
         process.exit(2);
     }
-}
-
-export const initSstButler = async () => {
-    await exec(
-        '💔 An error has occurred when installing \'@appsync-butler/sst\'.',
-        'npm', ['install', '@appsync-butler/sst']
-    );
 }
 
 /**
@@ -86,7 +85,8 @@ export const initSstButler = async () => {
  * @param {string | undefined} cwd
  */
 export const exec = async (errorMessage, file, args, cwd) => {
-    console.log('$', file, (args || []).join(' '));
+    cwd = cwd ? resolve(cwd) : undefined;
+    console.log(`[${cwd || process.env.PWD}]`, '$', file, (args || []).join(' '));
     try {
         const child = execa(file, args, { stdin: 0, cwd });
         child.stdout.pipe(process.stdout);
@@ -106,8 +106,8 @@ export const exec = async (errorMessage, file, args, cwd) => {
 export const mkdir = async (...paths) => {
     for (const p of paths) {
         try {
-            console.log("Creating directory:", p);
             await fsMkdir(p, 0o755);
+            console.log("Directory created:", p);
         } catch (e) {
             if (e.code === 'EEXIST') {
                 console.log("Directory already exists:", p);

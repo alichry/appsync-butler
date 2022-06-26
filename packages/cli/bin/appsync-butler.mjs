@@ -4,7 +4,7 @@ import inquirer from 'inquirer';
 import { readFileSync } from 'fs';
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { mkdir, initCdk, initSst, initSstButler, initButler } from '../lib/index.mjs';
+import { mkdir, initCdk, initSst, initButler } from '../lib/index.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -49,15 +49,15 @@ main.command('bootstrap', { isDefault: true })
         switch (toolkit) {
             case 'sst':
                 await initSst(directory, toolkitArgs);
-                await initSstButler();
+                await initButler(directory, true);
                 break;
             case 'cdk':
                 await initCdk(directory, toolkitArgs);
+                await initButler(directory, false);
                 break;
             case 'none':
                 break;
         }
-        await initButler();
     });
 
 main.parse();
