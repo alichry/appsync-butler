@@ -12,25 +12,64 @@ using [`@appsync-butler/core`](../core/README.md) only:
 
 ```ts  title="stacks/MyStack.ts"
 import { Loader } from '@appsync-butler/core';
-import { StackContext, AppSyncApi } from '@serverless-stack/resources';
+import { StackContext, AppSyncApi, Table } from '@serverless-stack/resources';
 
 export function MyStack({ stack }: StackContext) {
-    const api = new AppSyncApi(stack, 'api');
-    const loader = new Loader(stack, { api: api.cdk.graphqlApi });
-    loader.load();
+	const table = new Table(stack, 'table', {
+		fields: { pk: "string" },
+		primaryIndex: { partitionKey: "pk" }
+	});
+	const api = new AppSyncApi(stack, 'api', {
+		schema: 'graphql/index.graphql',
+		dataSources: {
+			sstTableDs: { type: "dynamodb", table }
+		}
+	});
+    
+	const loader = new Loader(stack, {
+		api: api.cdk.graphqlApi,
+		dataSources: {
+			tableDs: getDataSource(api, 'sstTableDs')!
+		},
+		defaultUnitResolverDataSource: 'tableDs',
+		defaultFunctionDataSource: 'tableDs'
+	});
+	loader.load();
+}
+
+function getDataSource(api: AppSyncApi, key: string) {
+	const ds = api.getDataSource(key);
+	if (! ds) {
+		throw new Error(
+			`Expecting '${key}' datasource key to be set, ` +
+			'found otherwise.'
+		)
+	}
+	return ds;
 }
 ```
 
 This package introduces [`SstLoader`](lib/SstLoader.ts) to load resolvers with SST compatibility. This might be useful for specific use cases.
 
 ```ts  title="stacks/MyStack.ts"
+import { StackContext, AppSyncApi, Table } from '@serverless-stack/resources';
 import { SstLoader } from '@appsync-butler/sst';
-import { StackContext, AppSyncApi } from '@serverless-stack/resources';
-import { Resolver } from "@aws-cdk/aws-appsync-alpha";
+import { Resolver } from '@aws-cdk/aws-appsync-alpha';
 
 export function MyStack({ stack }: StackContext) {
-    const api = new AppSyncApi(stack, 'api');
-    const loader = new SstLoader(stack, { api });
+    const table = new Table(stack, 'table', { ... });
+    const api = new AppSyncApi(stack, 'api', {
+        schema: 'graphql/index.graphql',
+        dataSources: {
+            tableDs: { type: "dynamodb", table }
+        }
+    });
+
+    const loader = new SstLoader(stack, {
+        sstApi: api,
+        defaultUnitResolverDataSource: 'tableDs',
+        defaultFunctionDataSource: 'tableDs'
+    });
     loader.load();
 
     // Suppose we have the following on-disk resolver:
