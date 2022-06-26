@@ -58,15 +58,26 @@ echo '$util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))' \
 ```ts title="lib/app-stack.ts" {11,12}
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { GraphqlApi } from '@aws-cdk/aws-appsync-alpha';
+import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
+import { GraphqlApi, Schema } from '@aws-cdk/aws-appsync-alpha';
 import { Loader } from '@appsync-butler/core';
 
 export class AppStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
-
-        const api = new GraphqlApi(this, 'api', { name: "test" });
-        const loader = new Loader(this, { api });
+        const table = new Table(this, 'table', {
+            partitionKey: { name: "pk", type: AttributeType.STRING }
+        });
+        const api = new GraphqlApi(this, 'api', {
+            name: "test",
+            schema: Schema.fromAsset("graphql/index.graphql")
+        });
+        const tableDs = api.addDynamoDbDataSource('tableDs', table);
+        const loader = new Loader(this, {
+            api,
+            defaultUnitResolverDataSource: tableDs,
+            defaultFunctionDataSource: tableDs
+        });
         loader.load();
     }
 }

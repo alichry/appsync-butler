@@ -29,7 +29,7 @@ export default class MyStack extends sst.Stack {
     super(scope, id, props);
 
     const api = new sst.AppSyncApi(this, "api", {
-      graphqlApi: { schema: "graphql/index.graphql" }
+      schema: 'graphql/index.graphql',
     });
 
     const loader = new Loader(this, { api });
@@ -44,7 +44,7 @@ export default class MyStack extends sst.Stack {
 ```ts title="lib/app-stack.ts" {4,14,15}
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { GraphqlApi } from '@aws-cdk/aws-appsync-alpha';
+import { GraphqlApi, Schema } from '@aws-cdk/aws-appsync-alpha';
 import { Loader } from '@appsync-butler/core';
 
 export class AppStack extends Stack {
@@ -52,7 +52,8 @@ export class AppStack extends Stack {
     super(scope, id, props);
 
     const api = new GraphqlApi(this, "api", {
-      name: "time-pingpong-api"
+      name: "time-pingpong-api",
+      schema: Schema.fromAsset("graphql/index.graphql")
     });
 
     const loader = new Loader(this, { api });
