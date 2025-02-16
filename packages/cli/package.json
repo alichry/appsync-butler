@@ -1,6 +1,6 @@
 {
   "name": "appsync-butler",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI to install and manage AppSync Butler",
   "keywords": [
     "appsync-butler",
