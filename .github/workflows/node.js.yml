@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [14.x, 16.x, 18.x, 20.x, 22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install root dependencies
@@ -62,10 +62,30 @@ jobs:
           node import.mjs
           echo "Testing CJS require"
           node require.cjs
+      - name: Lint packages
+        run: |
+          set -e
+          if [ "${{ matrix.node-version }}" = "22.x" ]; then
+            lerna run lint
+          fi
+  website:
+    name: "Build website"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 22.4
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.4
+      - name: Install root dependencies
+        run: npm install
+      - name: Bootstrap dependencies
+        run: npm run bootstrap
+      - name: Build packages
+        run: lerna run build
       - name: Install website dependencies
         working-directory: ./website
         run: npm install
       - name: Build website
         working-directory: ./website
         run: npm run build
-    

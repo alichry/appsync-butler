@@ -141,12 +141,12 @@ AppSync Butler handles the necessary steps to load this pipeline resolver into A
 AppSync Butler parses mapping templates (request, response, before, after) and
 replaces references of a user-defined variable to its specified value.
 Variables are denoted as `{{ var }}`. Variables are defined during the
-[instantialization of a loader](/docs/api/classes/appsync_butler_core.Loader) or set using
-[`loader.builder.parser.setVariable(key, value)`](/docs/api/classes/appsync_butler_core.Parser#setvariable)
+[instantialization of a loader](/docs/api/@appsync-butler/core/classes/Loader) or set using
+[`loader.builder.parser.setVariable(key, value)`](/docs/api/@appsync-butler/core/classes/Parser#setvariable)
 
 :::danger
 
-AppSync Butler throws an [`UndefinedVariableError`](/docs/api/classes/appsync_butler_core.UndefinedVariableError) if an unrecognized
+AppSync Butler throws an [`UndefinedVariableError`](/docs/api/@appsync-butler/core/classes/UndefinedVariableError) if an unrecognized
 variable is encountered in a mapping template.
 
 :::

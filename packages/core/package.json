@@ -32,7 +32,7 @@
     "transpile:cjs": "tsc --project tsconfig.build.cjs.json --outDir ./dist/cjs",
     "posttranspile:cjs": "echo '{\"type\": \"commonjs\"}' > ./dist/cjs/package.json",
     "transpile": "npm run transpile:esm && npm run transpile:cjs",
-    "build": "npm run lint && npm run transpile",
+    "build": "npm run transpile",
     "test": "c8 mocha",
     "prepublishOnly": "npm run build && npm run test"
   },

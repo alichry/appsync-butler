@@ -1,8 +1,20 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer').themes.github
+const darkCodeTheme = require('prism-react-renderer').themes.dracula;
+
+function injectTypeDocSidebar(items) {
+  return items.map((item) => {
+    if (item.link?.id === 'api/index') {
+      return {
+        ...item,
+        items: require('./docs/api/typedoc-sidebar.cjs'),
+      };
+    }
+    return item;
+  });
+}
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -27,6 +39,11 @@ const config = {
           '../packages/sst',
         ],
         entryPointStrategy: 'packages',
+        packageOptions: {
+          entryPoints: ["lib/index.ts"],
+          readme: "none",
+        },
+        //tsconfig: '../packages/core/tsconfig.json',
         //watch: process.env.TYPEDOC_WATCH,
         sidebar: {
           fullNames: false
@@ -72,7 +89,15 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          //sidebarPath: require.resolve('./sidebars.js'),
+          async sidebarItemsGenerator({
+            defaultSidebarItemsGenerator,
+            ...args
+          }) {
+            return injectTypeDocSidebar(
+              await defaultSidebarItemsGenerator(args),
+            );
+          },
           editUrl: 'https://github.com/alichry/appsync-butler/edit/master/website/',
           remarkPlugins: [
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],

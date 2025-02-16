@@ -7,5 +7,5 @@
     "categorizeByGroup": true,
     "sort": ["visibility", "static-first", "source-order", "alphabetical"],
     "disableSources": true,
-    "publicPath": "/api/"
+    "name": "API"
 }
