@@ -77,6 +77,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
+      - name: Install root dependencies
+        run: npm install
+      - name: Bootstrap dependencies
+        run: npm run bootstrap
+      - name: Build packages
+        run: lerna run build
       - name: Install website dependencies
         working-directory: ./website
         run: npm install

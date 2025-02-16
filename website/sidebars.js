@@ -1,4 +1,9 @@
 /**
+ * Note(alichry): Feb 2025 - This file is no longer used.
+ * The sidebar is generated automatically, and we inject
+ * the generated typedoc sidebars in docussaurus.config.js
+ */
+/**
  * Creating a sidebar enables you to:
  - create an ordered group of docs
  - render a sidebar for each doc of that group
