@@ -20,6 +20,18 @@ application with AppSync Butler installed. If you have an
 existing CDK or SST application, skip to the [Manual setup](#manual-setup) section. 
 To create a new project, run the following:
 
+:::warning
+SST v1 is no longer mainted. The tutorial is functional with SST v1
+if you have already bootstrapped the SST v1 in your AWS account before*.
+We recommend choosing CDK when following this tutorial. If you're
+interested in support for SST v2, please file an issue on GitHub.
+
+<p style={{ fontSize: "0.85rem" }}>\* When bootstrapping SST v1 on an AWS account, SST will deploy
+a cloudformation template that has a node14 lambda function.
+AWS killed support for node14 in lambda functions, and as such,
+the cloudformation deployment would fail.</p>
+:::
+
 <Tabs>
   <TabItem value="Serverless Stack Toolkit">
 
