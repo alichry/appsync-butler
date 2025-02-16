@@ -1,7 +1,7 @@
 {
   "name": "@appsync-butler/sst",
   "description": "Load resolvers into SST AppSync API constructs.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Ali Cherry",
   "homepage": "https://github.com/alichry/appsync-butler#readme",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint **/*.ts",
     "pretranspile:esm": "rm -rf ./dist/esm",
     "pretranspile:cjs": "rm -rf ./dist/cjs",
     "transpile:esm": "tsc --project tsconfig.build.json --outDir ./dist/esm",
@@ -33,33 +33,33 @@
     "posttranspile:cjs": "echo '{\"type\": \"commonjs\"}' > ./dist/cjs/package.json",
     "transpile": "npm run transpile:esm && npm run transpile:cjs",
     "build": "npm run lint && npm run transpile",
-    "test": "c8 mocha --loader=ts-node/esm 'test/**/*.{ts,js}'",
+    "test": "c8 mocha",
     "prepublishOnly": "npm run build && npm run test"
   },
   "devDependencies": {
-    "@appsync-butler/core": "^0.1.0",
-    "@aws-cdk/aws-appsync-alpha": "2.24.0-alpha.0",
-    "@serverless-stack/resources": "1.2.11",
-    "@types/chai": "^4.3.0",
-    "@types/lodash": "^4.14.178",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^16.11.12",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
-    "@typescript-eslint/parser": "^5.7.0",
-    "aws-cdk-lib": "2.24.0",
-    "c8": "^7.11.3",
-    "chai": "^4.3.4",
-    "eslint": "^8.4.1",
-    "eslint-plugin-import": "^2.25.3",
-    "mocha": "^9.1.3",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "@appsync-butler/core": "0.1.1",
+    "@serverless-stack/core": "1.18.4",
+    "@serverless-stack/resources": "1.18.4",
+    "@types/chai": "^5.0.1",
+    "@types/lodash": "^4.17.15",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.13.4",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "aws-cdk": "2.50.0",
+    "aws-cdk-lib": "2.50.0",
+    "c8": "^10.1.3",
+    "chai": "^5.2.0",
+    "eslint": "^9.20.1",
+    "eslint-plugin-import": "^2.31.0",
+    "lodash": "^4.17.21",
+    "mocha": "^11.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
-    "@appsync-butler/core": "*",
-    "@aws-cdk/aws-appsync-alpha": "*",
-    "@serverless-stack/resources": "1.x",
-    "aws-cdk-lib": "2.x"
+    "@appsync-butler/core": "0.1.1",
+    "@serverless-stack/resources": ">= 1.0.0 <= 1.18.4",
+    "@serverless-stack/core": "$@serverless-stack/resources"
   },
   "repository": {
     "type": "git",
