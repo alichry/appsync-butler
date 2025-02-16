@@ -20,21 +20,19 @@ import TabItem from '@theme/TabItem';
 <Tabs>
   <TabItem value="Serverless Stack Toolkit">
 
-```ts title="stacks/MyStack.ts" {2,12,13}
-import * as sst from "@serverless-stack/resources";
+```ts title="stacks/MyStack.ts" {2,8,9}
+import { StackContext, AppSyncApi } from "@serverless-stack/resources";
 import { SstLoader as Loader } from '@appsync-butler/sst';
 
-export default class MyStack extends sst.Stack {
-  constructor(scope: sst.App, id: string, props: sst.StackProps) {
-    super(scope, id, props);
-
-    const api = new sst.AppSyncApi(this, "api", {
-      schema: 'graphql/index.graphql',
-    });
-
-    const loader = new Loader(this, { api });
-    loader.load();
-  }
+export function MyStack({ stack }: StackContext) {
+  const api = new AppSyncApi(stack, "api", {
+    schema: "graphql/index.graphql"
+  });
+  const loader = new Loader(stack, { api });
+  loader.load();
+  stack.addOutputs({
+    GraphQlApiEndpoint: api.url,
+  });
 }
 ```
 

@@ -13,17 +13,17 @@ It's time to create an AppSync CDK/SST construct, if not yet created.
   <TabItem value="Serverless Stack Toolkit">
 
 ```ts title="stacks/MyStack.ts"
-import * as sst from "@serverless-stack/resources";
+import { StackContext, AppSyncApi } from "@serverless-stack/resources";
 
-export default class MyStack extends sst.Stack {
-  constructor(scope: sst.App, id: string, props: sst.StackProps) {
-    super(scope, id, props);
-
-    const api = new sst.AppSyncApi(this, "api", {
-      graphqlApi: { schema: "graphql/index.graphql" }
-    });
-  }
+export function MyStack({ stack }: StackContext) {
+  const api = new AppSyncApi(stack, "api", {
+    schema: "graphql/index.graphql"
+  });
+  stack.addOutputs({
+    GraphQlApiEndpoint: api.url,
+  });
 }
+
 ```
 
   </TabItem>
