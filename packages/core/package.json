@@ -24,6 +24,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines" : {
+    "node" : ">=16.0.0 <25.0.0"
+  },
   "scripts": {
     "lint": "eslint **/*.ts",
     "pretranspile:esm": "rm -rf ./dist/esm",
