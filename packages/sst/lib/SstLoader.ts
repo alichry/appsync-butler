@@ -47,8 +47,8 @@ export default class SstLoader extends Loader {
     public readonly defaultFunctionDs?: string | 'none';
 
     constructor(scope: Loader['scope'], options: SstLoaderOptions) {
-        super(scope, { ...options, api: options.sstApi.cdk.graphqlApi });
-        this.sstApi = options.sstApi;
+        super(scope, { ...options, api: options.api.cdk.graphqlApi });
+        this.sstApi = options.api;
     }
 
     protected resolveStringDataSource(

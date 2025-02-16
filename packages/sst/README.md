@@ -66,7 +66,7 @@ export function MyStack({ stack }: StackContext) {
     });
 
     const loader = new SstLoader(stack, {
-        sstApi: api,
+        api,
         defaultUnitResolverDataSource: 'tableDs',
         defaultFunctionDataSource: 'tableDs'
     });

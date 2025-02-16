@@ -40,13 +40,13 @@ const createSstDummyStackAndAppsyncApi = (): StackCreationResult => {
 }
 
 export const loadSst = (
-    opts: Omit<SstLoaderOptions, 'sstApi'>, noDefault = false
+    opts: Omit<SstLoaderOptions, 'api'>, noDefault = false
 ): StackCreationResult & { loader: SstLoader } => {
     const { dummyStack, api, dynamoDbTable, secondaryDynamoDbTable } =
         createSstDummyStackAndAppsyncApi();
     
     const loader = new SstLoader(dummyStack, {
-        sstApi: api,
+        api,
         defaultFunctionDataSource: noDefault ? undefined : 'myTable',
         defaultUnitResolverDataSource: noDefault ? undefined : 'myTable',
         ...opts
