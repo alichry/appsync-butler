@@ -1,7 +1,7 @@
 {
   "name": "@appsync-butler/sst",
   "description": "Load resolvers into SST AppSync API constructs.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Ali Cherry",
   "homepage": "https://github.com/alichry/appsync-butler#readme",
   "license": "MIT",
