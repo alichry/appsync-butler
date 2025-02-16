@@ -1,20 +1,34 @@
 import { execa } from 'execa';
-import { mkdir as fsMkdir, appendFile as fsAppendFile } from 'fs/promises';
+import { mkdir as fsMkdir, appendFile as fsAppendFile, readFile as fsReadFile, writeFile as fsWriteFile } from 'fs/promises';
 import { resolve } from 'path';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+const cdkVersion = '2.54.0'; /* AppSync Butler v0.1.1 supports 2.1.0 <= aws-cdk <= 2.54 */
+const sstVersion = 'one'; /* SST V2 removes the AppSyncApi export from @serverless-stack/resources */
 
 /**
  * @param {string} directory
- * @param {string[]} toolkitArgs 
+ * @param {string[]} toolkitArgs
  */
 export const initCdk = async (directory, toolkitArgs) => {
     await exec(
         '💔 An error has occurred when installing CDK.',
-        'npx', ['aws-cdk', 'init', 'app'].concat(toolkitArgs),
+        'npx',
+        [
+            `aws-cdk@${cdkVersion}`,
+            'init',
+            'app'
+        ].concat(toolkitArgs),
         directory
     );
     await exec(
-        '💔 An error has occurred when installing \'@aws-cdk/aws-appsync-alpha\'',
-        'npm', ['install', '@aws-cdk/aws-appsync-alpha'],
+        `💔 An error has occurred when installing \'@aws-cdk/aws-appsync-alpha@${cdkVersion}-alpha.0\'`,
+        'npm',
+        [
+            'install',
+            `@aws-cdk/aws-appsync-alpha@${cdkVersion}-alpha.0`
+        ],
         directory
     );
 }
@@ -32,22 +46,43 @@ export const initSst = async (directory, toolkitArgs = []) => {
     }
     await exec(
         '💔 An error has occurred when installing SST.',
-        'npx', ['create-sst'].concat(toolkitArgs)
+        'npx', [`create-sst@${sstVersion}`].concat(toolkitArgs)
     );
     await exec(
         '💔 An error has occurred when installing SST.',
         'npm', ['install'],
         directory
     );
-    // @aws-cdk/aws-appsync-alpha should be already installed by SST,
-    // but it is a @serverless-stack/resources dependency. Let's install it
-    // as a root dependency to help npm notice that the required
-    // @aws-cdk/aws-appsync-alpha peer dependency is installed.
     await exec(
         '💔 An error has occurred when installing \'@aws-cdk/aws-appsync-alpha\'',
-        'npm', ['exec', '--package=@serverless-stack/cli', 'sst', 'add-cdk', '@aws-cdk/aws-appsync-alpha'],
+        'npm',
+        [
+            'exec',
+            `--package=@serverless-stack/cli`,
+            'sst',
+            'add-cdk',
+            '@aws-cdk/aws-appsync-alpha'
+        ],
         directory
     );
+
+    const tsconfigPath = join(directory, "tsconfig.json");
+    if (existsSync(tsconfigPath)) {
+        // Fix bug in the created typescript project.
+        // Sadly create-sst V1 is not working out of the box.
+        // Otherwise, without this fix, TS will emit the below error:
+        // Cannot find module '@serverless-stack/resources' or its corresponding type declarations
+
+        console.log("\n⚠️ Setting \"type\" to \"module\" in package.json");
+        await replaceInFile(
+            join(directory, "package.json"),
+            (content) => {
+                const obj = JSON.parse(content);
+                obj.type = "module";
+                return JSON.stringify(obj, null, 4);
+            }
+        );
+    }
 }
 
 /**
@@ -121,4 +156,14 @@ export const mkdir = async (...paths) => {
 export const appendToFile = async (path, str) => {
     console.log("Writing to file:", path);
     await fsAppendFile(path, str, { encoding: 'ascii', mode: 0o644 });
+}
+
+const replaceInFile = async (path, cb) => {
+    let content = await fsReadFile(path, "ascii");
+    content = cb(content);
+    await fsWriteFile(
+        path,
+        content,
+        "ascii"
+    );
 }
