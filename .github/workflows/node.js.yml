@@ -73,10 +73,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 22
+      - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 18.x
       - name: Install root dependencies
         run: npm install
       - name: Bootstrap dependencies
