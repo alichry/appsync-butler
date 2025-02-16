@@ -40,7 +40,8 @@ const config = {
         ],
         entryPointStrategy: 'packages',
         packageOptions: {
-          entryPoints: ["lib/index.ts"]
+          entryPoints: ["lib/index.ts"],
+          readme: "none",
         },
         //tsconfig: '../packages/core/tsconfig.json',
         //watch: process.env.TYPEDOC_WATCH,

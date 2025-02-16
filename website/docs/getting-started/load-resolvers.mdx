@@ -11,8 +11,8 @@ Up until now, we have not interacted with AppSync Butler. We have
 
 The AppSync construct is not _yet_ aware of the on-disk resolvers. 
 AppSync Butler handles this process seamlessly. To load on-disk
-resolvers and functions, use [`Loader`](/docs/api/classes/appsync_butler_core.Loader) or
-[`SstLoader`](/docs/api/classes/appsync_butler_sst.SstLoader) for CDK and SST applications respectively
+resolvers and functions, use [`Loader`](/docs/api/@appsync-butler/core/classes/Loader) or
+[`SstLoader`](/docs/api/@appsync-butler/sst/classes/SstLoader) for CDK and SST applications respectively
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -80,5 +80,5 @@ const loader = new Loader(this, { api, defaultUnitResolverDataSource: 'none' });
 }
 ```
 -->
-For other options that you may pass, check [LoaderOptions](/docs/api/#loaderoptions).
+For other options that you may pass, check [CDK:LoaderOptions](/docs/api/@appsync-butler/core/interfaces/LoaderOptions) or [SST:LoaderOptions](/docs/api/@appsync-butler/sst/interfaces/SstLoaderOptions).
 :::

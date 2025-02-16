@@ -65,8 +65,8 @@ export default class SstLoader extends Loader {
     }
 
     /**
-     * @link http://github.com/serverless-stack/serverless-stack/issues/1115
-     * @param resolver 
+     * {@link http://github.com/serverless-stack/serverless-stack/issues/1115}
+     * @param resolver
      */
     protected addResolver(resolver: ParsedResolverInfo): void {
         let dataSource = "";
