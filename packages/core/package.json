@@ -1,6 +1,6 @@
 {
   "name": "@appsync-butler/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple yet powerful AppSync development framework. Compatible with CDK and SST. 🚀 Highly-suitable for Single Table design applications.",
   "author": "Ali Cherry",
   "homepage": "https://github.com/alichry/appsync-butler#readme",
@@ -25,7 +25,7 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint **/*.ts",
     "pretranspile:esm": "rm -rf ./dist/esm",
     "pretranspile:cjs": "rm -rf ./dist/cjs",
     "transpile:esm": "tsc --project tsconfig.build.json --outDir ./dist/esm",
@@ -33,30 +33,29 @@
     "posttranspile:cjs": "echo '{\"type\": \"commonjs\"}' > ./dist/cjs/package.json",
     "transpile": "npm run transpile:esm && npm run transpile:cjs",
     "build": "npm run lint && npm run transpile",
-    "test": "c8 mocha --loader=ts-node/esm 'test/**/*.{ts,js}'",
+    "test": "c8 mocha",
     "prepublishOnly": "npm run build && npm run test"
   },
   "devDependencies": {
-    "@aws-cdk/aws-appsync-alpha": "2.24.0-alpha.0",
-    "@types/chai": "^4.3.0",
-    "@types/lodash": "^4.14.178",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^16.11.12",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
-    "@typescript-eslint/parser": "^5.7.0",
-    "aws-cdk-lib": "2.24.0",
-    "c8": "^7.11.3",
-    "chai": "^4.3.4",
-    "eslint": "^8.4.1",
-    "eslint-plugin-import": "^2.25.3",
+    "@aws-cdk/aws-appsync-alpha": "2.50.0-alpha.0",
+    "@types/chai": "^5.0.1",
+    "@types/lodash": "^4.17.15",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.13.4",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "aws-cdk-lib": "2.50.0",
+    "c8": "^10.1.3",
+    "chai": "^5.2.0",
+    "eslint": "^9.20.1",
+    "eslint-plugin-import": "^2.31.0",
     "lodash": "^4.17.21",
-    "mocha": "^9.1.3",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.4"
+    "mocha": "^11.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
-    "@aws-cdk/aws-appsync-alpha": "*",
-    "aws-cdk-lib": "2.x"
+    "@aws-cdk/aws-appsync-alpha": "2.0.0-alpha.1 || 2.0.0-alpha.2 || 2.0.0-alpha.3 || 2.0.0-alpha.4 || 2.0.0-alpha.5 || 2.0.0-alpha.6 || 2.0.0-alpha.7 || 2.0.0-alpha.8 || 2.0.0-alpha.9 || 2.0.0-alpha.10 || 2.0.0-alpha.11 || 2.0.0-rc.23 || 2.0.0-rc.24 || 2.2.0-alpha.0 || 2.3.0-alpha.0 || 2.4.0-alpha.0 || 2.5.0-alpha.0 || 2.6.0-alpha.0 || 2.7.0-alpha.0 || 2.8.0-alpha.0 || 2.9.0-alpha.0 || 2.10.0-alpha.0 || 2.11.0-alpha.0 || 2.12.0-alpha.0 || 2.13.0-alpha.0 || 2.14.0-alpha.0 || 2.15.0-alpha.0 || 2.16.0-alpha.0 || 2.17.0-alpha.0 || 2.18.0-alpha.0 || 2.19.0-alpha.0 || 2.20.0-alpha.0 || 2.21.0-alpha.0 || 2.21.1-alpha.0 || 2.22.0-alpha.0 || 2.23.0-alpha.0 || 2.24.0-alpha.0 || 2.24.1-alpha.0 || 2.25.0-alpha.0 || 2.26.0-alpha.0 || 2.27.0-alpha.0 || 2.28.0-alpha.0 || 2.28.1-alpha.0 || 2.29.0-alpha.0 || 2.29.1-alpha.0 || 2.30.0-alpha.0 || 2.31.0-alpha.0 || 2.31.1-alpha.0 || 2.31.2-alpha.0 || 2.32.0-alpha.0 || 2.32.1-alpha.0 || 2.33.0-alpha.0 || 2.34.0-alpha.0 || 2.34.1-alpha.0 || 2.34.2-alpha.0 || 2.35.0-alpha.0 || 2.36.0-alpha.0 || 2.37.0-alpha.0 || 2.37.1-alpha.0 || 2.38.0-alpha.0 || 2.38.1-alpha.0 || 2.39.0-alpha.0 || 2.39.1-alpha.0 || 2.40.0-alpha.0 || 2.41.0-alpha.0 || 2.42.0-alpha.0 || 2.42.1-alpha.0 || 2.43.0-alpha.0 || 2.43.1-alpha.0 || 2.44.0-alpha.0 || 2.45.0-alpha.0 || 2.46.0-alpha.0 || 2.47.0-alpha.0 || 2.48.0-alpha.0 || 2.49.0-alpha.0 || 2.49.1-alpha.0 || 2.50.0-alpha.0 || 2.51.0-alpha.0 || 2.51.1-alpha.0 || 2.52.0-alpha.0 || 2.52.1-alpha.0 || 2.53.0-alpha.0 || 2.54.0-alpha.0",
+    "aws-cdk-lib": ">= 2.1.0 <= 2.54.0"
   },
   "keywords": [
     "appsync-butler",

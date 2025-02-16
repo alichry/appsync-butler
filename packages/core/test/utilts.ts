@@ -14,7 +14,9 @@ export const loadCdk = (opts: Omit<LoaderOptions, 'api' | 'dataSources'>, noDefa
     const secondaryTable = new Table(dummyStack, "dummyTable2", {
         partitionKey: { name: "pk", type: AttributeType.STRING }
     });
-    const api = new GraphqlApi(dummyStack, "appsync", { name: "dummyApi" });
+    const api = new GraphqlApi(dummyStack, "appsync", {
+        name: "dummyApi"
+    });
     const ds = api.addDynamoDbDataSource("myTable", table);
     const secondaryDs = api.addDynamoDbDataSource("test", secondaryTable);
     const loader = new Loader(dummyStack, {
